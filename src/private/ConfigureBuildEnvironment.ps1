@@ -105,20 +105,20 @@ function ConfigureBuildEnvironment {
                         $vs = @($vsInstances | Select-VSSetupInstance -Version '[15.0,)' -Require Microsoft.Component.MSBuild)
                         if ($vs) {
                             if ($buildToolsKey -eq 'MSBuildToolsPath32') {
-                                $frameworkDirs += Join-Path ($vs[0].InstallationPath) MSBuild\15.0\Bin
+                                $frameworkDirs += $vs | % { Join-Path ($_.InstallationPath) MSBuild\15.0\Bin } | Where-Object { Test-Path $_ -PathType Container }
                             }
                             else {
-                                $frameworkDirs += Join-Path ($vs[0].InstallationPath) MSBuild\15.0\Bin\amd64
+                                $frameworkDirs += $vs | % { Join-Path ($_.InstallationPath) MSBuild\15.0\Bin\amd64 } | Where-Object { Test-Path $_ -PathType Container }
                             }
                         }
 
                         $vs = @($vsInstances | Select-VSSetupInstance -Version '[15.0,)' -Product Microsoft.VisualStudio.Product.BuildTools)
                         if ($vs) {
                             if ($buildToolsKey -eq 'MSBuildToolsPath32') {
-                                $frameworkDirs += Join-Path ($vs[0].InstallationPath) MSBuild\15.0\Bin
+                                $frameworkDirs += $vs | % { Join-Path ($_.InstallationPath) MSBuild\15.0\Bin } | Where-Object { Test-Path $_ -PathType Container }
                             }
                             else {
-                                $frameworkDirs += Join-Path ($vs[0].InstallationPath) MSBuild\15.0\Bin\amd64
+                                $frameworkDirs += $vs | % { Join-Path ($_.InstallationPath) MSBuild\15.0\Bin\amd64 } | Where-Object { Test-Path $_ -PathType Container }
                             }
                         }
                     }
@@ -152,12 +152,12 @@ function ConfigureBuildEnvironment {
                     if ($vsInstances = Get-VSSetupInstance) {
                         $vs = @($vsInstances | Select-VSSetupInstance -Version '[16.0,)' -Require Microsoft.Component.MSBuild)
                         if ($vs) {
-                            $frameworkDirs += Join-Path ($vs[0].InstallationPath) MSBuild\Current\Bin
+                            $frameworkDirs += $vs | % { Join-Path ($_.InstallationPath) MSBuild\Current\Bin } | Where-Object { Test-Path $_ -PathType Container }
                         }
 
                         $vs = @($vsInstances | Select-VSSetupInstance -Version '[16.0,)' -Product Microsoft.VisualStudio.Product.BuildTools)
                         if ($vs) {
-                            $frameworkDirs += Join-Path ($vs[0].InstallationPath) MSBuild\Current\Bin
+                            $frameworkDirs += $vs | % { Join-Path ($_.InstallationPath) MSBuild\Current\Bin } | Where-Object { Test-Path $_ -PathType Container }
                         }
                     }
                     else {
